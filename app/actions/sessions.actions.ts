@@ -164,14 +164,9 @@ export async function startSession(
       startedAt: new Date(),
     })
 
-    const lean = await Session.findById(created._id).lean<LeanSession>()
-    if (!lean)
-      return { success: false, error: 'Failed to retrieve created session' }
-
-    revalidatePath('/week')
-    revalidatePath('/history')
-
-    return { success: true, data: toDTO(lean) }
+    // ✅ Sin revalidatePath: no puede usarse durante el render de un Server Component
+    // (StartSessionPage llama esta acción durante su render y revalidatePath lanzaría error)
+    return { success: true, data: toDTO(created.toObject() as LeanSession) }
   } catch (err) {
     const message =
       err instanceof Error ? err.message : 'Failed to start session'
@@ -246,15 +241,12 @@ export async function completeSession(
 
     await session.save()
 
-    const lean = await Session.findById(sessionId).lean<LeanSession>()
-    if (!lean)
-      return { success: false, error: 'Failed to retrieve completed session' }
-
+    // ✅ Usamos el documento en memoria, sin re-fetch innecesario
     revalidatePath('/week')
     revalidatePath('/history')
     revalidatePath(`/history/${sessionId}`)
 
-    return { success: true, data: toDTO(lean) }
+    return { success: true, data: toDTO(session.toObject() as LeanSession) }
   } catch (err) {
     const message =
       err instanceof Error ? err.message : 'Failed to complete session'
