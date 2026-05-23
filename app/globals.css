@@ -14,7 +14,8 @@
 
   /* Font Families */
   --font-anton: var(--font-anton);
-  --font-google-sans-flex: var(--font-google-sans-flex);
+
+  --font-google-sans-flex: 'Google Sans Flex', sans-serif;
 
   --color-ll-black-900: #0f0f0f;
   --color-ll-black-600: #2c2a26;

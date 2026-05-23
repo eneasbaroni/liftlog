@@ -1,20 +1,11 @@
 import type { Metadata } from 'next'
-import { Anton, Google_Sans_Flex } from 'next/font/google'
+import { Anton } from 'next/font/google'
 import './globals.css'
 
 const anton = Anton({
   variable: '--font-anton',
   weight: '400',
   subsets: ['latin'],
-})
-
-const googleSansFlex = Google_Sans_Flex({
-  variable: '--font-google-sans-flex',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  subsets: ['latin'],
-  adjustFontFallback: false,
-  display: 'swap',
-  preload: false,
 })
 
 export const metadata: Metadata = {
@@ -32,10 +23,19 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${anton.variable} ${googleSansFlex.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${anton.variable} h-full antialiased`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@100..900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   )
