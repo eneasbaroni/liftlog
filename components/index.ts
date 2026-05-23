@@ -21,6 +21,12 @@ export { SessionSummary } from './session/SessionSummary/SessionSummary'
 // ── Progress ──────────────────────────────────────────────────────────────────
 export { ProgressChart } from './progress/ProgressChart/ProgressChart'
 export { ProgressStats } from './progress/ProgressStats/ProgressStats'
+export { MuscleGroupSection } from './progress/MuscleGroupSection/MuscleGroupSection'
+export { ExerciseProgressRow } from './progress/ExerciseProgressRow/ExerciseProgressRow'
 
 // ── Nav ────────────────────────────────────────────────────────────────────────
 export { BottomNav } from './nav/BottomNav/BottomNav'
+
+// ── History ────────────────────────────────────────────────────────────────────
+export { SessionDetail } from './history/SessionDetail/SessionDetail'
+export { SessionCard } from './history/SessionCard/SessionCard'

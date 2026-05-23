@@ -3,7 +3,3 @@ export type NavItem = {
   label: string
   icon: string
 }
-
-export type BottomNavProps = {
-  activePath: string
-}

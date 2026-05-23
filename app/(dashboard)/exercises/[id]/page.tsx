@@ -34,7 +34,7 @@ const ExerciseDetailPage = async ({ params }: ExerciseDetailPageProps) => {
       </h1>
 
       {/* Default stats */}
-      <div className="grid grid-cols-3 gap-[3px] mb-4">
+      <div className="grid grid-cols-3 gap-0.5 mb-0.5">
         <div className="bg-ll-black-600 rounded-[10px] p-3">
           <p className="text-ll-black-300 text-[9px] uppercase tracking-wider mb-1">
             Series
@@ -77,7 +77,7 @@ const ExerciseDetailPage = async ({ params }: ExerciseDetailPageProps) => {
       )}
 
       {/* Progress chart */}
-      <div className="bg-ll-black-600 rounded-[10px] p-4 mb-4">
+      <div className="bg-ll-black-600 rounded-[10px] p-4 mb-0.5">
         <p className="text-ll-black-300 text-[9px] uppercase tracking-wider mb-4">
           Progreso
         </p>

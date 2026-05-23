@@ -12,6 +12,9 @@ const googleSansFlex = Google_Sans_Flex({
   variable: '--font-google-sans-flex',
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
+  adjustFontFallback: false,
+  display: 'swap',
+  preload: false,
 })
 
 export const metadata: Metadata = {

@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { BottomNavProps, NavItem } from './types'
+import { usePathname } from 'next/navigation'
+import { NavItem } from './types'
 
 const NAV_ITEMS: NavItem[] = [
   {
@@ -26,11 +27,13 @@ const NAV_ITEMS: NavItem[] = [
   },
 ]
 
-export const BottomNav = ({ activePath }: BottomNavProps) => {
+export const BottomNav = () => {
+  const pathname = usePathname()
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-ll-black-900 border-t border-ll-black-600 flex items-stretch z-50">
       {NAV_ITEMS.map((item) => {
-        const isActive = activePath.startsWith(item.href)
+        const isActive = pathname.startsWith(item.href)
 
         return (
           <Link
