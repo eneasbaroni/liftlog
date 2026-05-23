@@ -1,12 +1,12 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 .pepe {
-  color: #0F0F0F;
-  color: #2C2A26;
-  color: #1A1B1D;
-  color: #261D15;
-  color: #5A5852;
-  color: #9A9690;
+  color: #0f0f0f;
+  color: #2c2a26;
+  color: #1a1b1d;
+  color: #261d15;
+  color: #5a5852;
+  color: #9a9690;
 }
 
 @theme inline {
@@ -16,15 +16,15 @@
   --font-anton: var(--font-anton);
   --font-google-sans-flex: var(--font-google-sans-flex);
 
-  --color-ll-black-900: #0F0F0F;
-  --color-ll-black-600: #2C2A26;
-  --color-ll-black-600: #1A1B1D;
-  --color-ll-black-300: #5A5852;
-  --color-ll-black-200: #9A9690;
-  --color-ll-black-orange: #261D15;
+  --color-ll-black-900: #0f0f0f;
+  --color-ll-black-600: #2c2a26;
+  --color-ll-black-600: #1a1b1d;
+  --color-ll-black-300: #5a5852;
+  --color-ll-black-200: #9a9690;
+  --color-ll-black-orange: #261d15;
   --color-ll-black-orange: #292523;
-  --color-ll-orange: #E05C1A;
-  --color-ll-white: #F0EDE8;
+  --color-ll-orange: #e05c1a;
+  --color-ll-white: #f0ede8;
 }
 
 @custom-variant notebook {
@@ -53,11 +53,14 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-google-sans-flex);
+  background-color: #0f0f0f;
 }
 
 h1,
 h2,
-h3, h4, h5 {
+h3,
+h4,
+h5 {
   font-family: var(--font-anton);
 }
 
