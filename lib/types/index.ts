@@ -53,6 +53,7 @@ export type SessionDTO = {
   startedAt?: string
   completedAt?: string
   durationMin?: number
+  generalNotes?: string
 }
 
 export type ProgressPoint = {
