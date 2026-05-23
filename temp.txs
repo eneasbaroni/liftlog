@@ -1,0 +1,12 @@
+liftlog/
+├── lib/
+│   ├── db/
+│   │   ├── mongoose.ts                ← conexión singleton a MongoDB
+│   │   └── models/
+│   │       ├── Exercise.ts            ← modelo de ejercicios
+│   │       ├── Routine.ts             ← modelo de rutinas (template)
+│   │       └── Session.ts             ← modelo de sesiones (ejecución real)
+│   ├── types/
+│   │   └── index.ts                   ← DTOs y tipos TypeScript globales
+│   └── utils/
+│       └── calculations.ts            ← 1RM, volumen, buildProgressPoint

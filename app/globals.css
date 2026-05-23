@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+.pepe {
+  color: #0F0F0F;
+  color: #2C2A26;
+  color: #1A1B1D;
+  color: #261D15;
+  color: #5A5852;
+  color: #9A9690;
+}
+
+@theme inline {
+  /* Custom Colors */
+
+  /* Font Families */
+  --font-anton: var(--font-anton);
+  --font-google-sans-flex: var(--font-google-sans-flex);
+
+  --color-ll-black-900: #0F0F0F;
+  --color-ll-black-600: #2C2A26;
+  --color-ll-black-600: #1A1B1D;
+  --color-ll-black-300: #5A5852;
+  --color-ll-black-200: #9A9690;
+  --color-ll-black-orange: #261D15;
+  --color-ll-black-orange: #292523;
+  --color-ll-orange: #E05C1A;
+  --color-ll-white: #F0EDE8;
+}
+
+@custom-variant notebook {
+  @media (width < 1280px) {
+    @slot;
+  }
+}
+
+@custom-variant tablet {
+  @media (width < 1024px) {
+    @slot;
+  }
+}
+
+@custom-variant mobile {
+  @media (width < 768px) {
+    @slot;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-google-sans-flex);
+}
+
+h1,
+h2,
+h3, h4, h5 {
+  font-family: var(--font-anton);
+}
+
+.mise-glass {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(245, 246, 247, 0.05);
+  border: 1px solid rgba(245, 246, 247, 0.1);
+}
