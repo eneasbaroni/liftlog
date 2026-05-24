@@ -66,7 +66,7 @@ export const useActiveSession = (
           ),
         }))
 
-        const expectedSets = 4 // fallback; ideally passed from routine
+        const expectedSets = activeExercise.targetSets
 
         if (activeSetIndex + 1 >= expectedSets) {
           // Move to next exercise

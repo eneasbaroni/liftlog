@@ -27,6 +27,7 @@ type LeanSessionExercise = {
   order: number
   sets: LeanSessionSet[]
   notes?: string
+  targetSets: number
 }
 
 type LeanSession = {
@@ -79,6 +80,7 @@ function toDTO(doc: LeanSession): SessionDTO {
       order: ex.order,
       notes: ex.notes,
       sets: ex.sets.map(setToDTO),
+      targetSets: ex.targetSets ?? 3,
     })),
     startedAt: doc.startedAt
       ? new Date(doc.startedAt).toISOString()
@@ -152,6 +154,7 @@ export async function startSession(
       name: nameMap.get(e.exerciseId.toString()) ?? 'Unknown',
       order: i,
       sets: [],
+      targetSets: e.sets,
       notes: e.notes,
     }))
 

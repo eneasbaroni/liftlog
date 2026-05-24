@@ -21,6 +21,7 @@ export interface ISessionExercise {
   order: number
   sets: ISessionSet[]
   notes?: string
+  targetSets: number
 }
 
 export interface ISession extends Document {
@@ -64,6 +65,7 @@ const SessionExerciseSchema = new Schema<ISessionExercise>(
     order: { type: Number, required: true, default: 0 },
     sets: [SessionSetSchema],
     notes: { type: String, trim: true },
+    targetSets: { type: Number, required: true, default: 3 },
   },
   { _id: false }
 )

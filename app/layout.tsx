@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: 'LiftLog',
   description: 'LiftLog is a tool for tracking your lifts',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/logo.png',
     apple: '/icons/icon-192.png',
   },
 }

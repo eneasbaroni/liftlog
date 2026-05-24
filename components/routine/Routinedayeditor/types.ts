@@ -9,3 +9,14 @@ export type RoutineDayEditorProps = {
   exercises: DayExerciseWithName[]
   availableExercises: ExerciseDTO[]
 }
+
+export type RoutineExerciseRow = {
+  exerciseId: string
+  name: string
+  order: number
+  sets: number
+  reps: number
+  targetWeight: number
+  restSeconds?: number
+  notes?: string
+}

@@ -3,8 +3,7 @@ import { notFound } from 'next/navigation'
 import { getRoutineById } from '@/app/actions/routines.actions'
 import { getExercises } from '@/app/actions/exercises.actions'
 import { RoutineDayEditor } from '@/components'
-import { WEEK_DAYS } from '@/lib/constants'
-import { WEEK_DAY_LABELS } from '@/lib/constants'
+import { WEEK_DAYS, WEEK_DAY_LABELS } from '@/lib/constants'
 import { RoutineDetailPageProps } from './types'
 
 const RoutineDetailPage = async ({
@@ -101,6 +100,7 @@ const RoutineDetailPage = async ({
       </p>
 
       <RoutineDayEditor
+        key={activeDay}
         routineId={id}
         day={activeDay}
         exercises={dayExercises}

@@ -110,7 +110,7 @@ export const ActiveSession = ({
               {activeExercise.name}
             </h2>
             <div className="flex gap-1.5">
-              {Array.from({ length: 4 }).map((_, i) => (
+              {Array.from({ length: activeExercise.targetSets }).map((_, i) => (
                 <div
                   key={i}
                   className={[
@@ -125,7 +125,7 @@ export const ActiveSession = ({
               ))}
             </div>
             <p className="text-ll-black-300 text-[11px] mt-2">
-              Serie {activeSetIndex + 1} de 4
+              Serie {activeSetIndex + 1} de {activeExercise.targetSets}
             </p>
           </div>
 

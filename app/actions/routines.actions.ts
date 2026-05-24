@@ -70,11 +70,15 @@ function toDTO(doc: LeanRoutine): RoutineDTO {
   const daysMap = doc.days as unknown as Map<string, LeanRoutineExercise[]>
   if (daysMap instanceof Map) {
     daysMap.forEach((exercises, day) => {
-      days[day as WeekDay] = exercises.map(exerciseToPayload)
+      days[day as WeekDay] = [...exercises]
+        .sort((a, b) => a.order - b.order)
+        .map(exerciseToPayload)
     })
   } else {
     for (const [day, exercises] of Object.entries(doc.days)) {
-      days[day as WeekDay] = exercises.map(exerciseToPayload)
+      days[day as WeekDay] = [...exercises]
+        .sort((a, b) => a.order - b.order)
+        .map(exerciseToPayload)
     }
   }
 

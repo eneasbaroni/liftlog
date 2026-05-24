@@ -11,12 +11,14 @@ export const RoutineExerciseTile = ({
           <p className="text-ll-white text-[13px] font-medium">
             {exercise.name}
           </p>
-          <div className="flex gap-[3px]">
+          <div className="flex gap-2">
             {Array.from({ length: exercise.sets }).map((_, i) => (
               <div
                 key={i}
-                className="w-3.5 h-3.5 rounded-[4px] bg-ll-black-300"
-              />
+                className="w-4 h-4 rounded-full bg-ll-orange/20 flex items-center justify-center"
+              >
+                <div className="w-0.5 h-0.5 rounded-full bg-ll-orange" />
+              </div>
             ))}
           </div>
           <p className="text-ll-black-300 text-[10px]">

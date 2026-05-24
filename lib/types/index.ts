@@ -40,6 +40,7 @@ export type SessionExerciseDTO = {
   name: string
   order: number
   sets: SessionSetDTO[]
+  targetSets: number
   notes?: string
 }
 
