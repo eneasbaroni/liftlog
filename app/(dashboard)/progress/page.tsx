@@ -21,7 +21,7 @@ const ProgressPage = async () => {
 
       {!hasExercises ? (
         <div className="flex flex-col items-center justify-center gap-3 py-16">
-          <p className="text-ll-black-300 text-[13px] text-center">
+          <p className="text-ll-black-300 text-sm text-center">
             Creá ejercicios para ver tu progreso.
           </p>
         </div>

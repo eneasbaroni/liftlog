@@ -48,7 +48,7 @@ export const RoutineCard = ({
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <p className="text-ll-white text-[13px] font-medium truncate">
+        <p className="text-ll-white text-sm font-medium truncate">
           {routine.name}
         </p>
         <p className="text-ll-black-300 text-[11px] mt-0.5">

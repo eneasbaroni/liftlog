@@ -59,7 +59,7 @@ const ExerciseDetailPage = async ({ params }: ExerciseDetailPageProps) => {
             <span className="text-ll-white text-[24px]">
               {exercise.defaultWeight}
             </span>
-            <span className="text-ll-black-300 text-[12px] ml-0.5">kg</span>
+            <span className="text-ll-black-300 text-xs ml-0.5">kg</span>
           </p>
         </div>
       </div>
@@ -70,7 +70,7 @@ const ExerciseDetailPage = async ({ params }: ExerciseDetailPageProps) => {
           <p className="text-ll-black-300 text-[9px] uppercase tracking-wider mb-2">
             Descripción
           </p>
-          <p className="text-ll-black-200 text-[13px] leading-relaxed">
+          <p className="text-ll-black-200 text-sm leading-relaxed">
             {exercise.description}
           </p>
         </div>

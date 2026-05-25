@@ -80,7 +80,7 @@ export const ProgressStats = ({ points }: ProgressStatsProps) => {
             Tendencia última sesión
           </p>
           <p
-            className={`text-[13px] font-medium ${trend >= 0 ? 'text-ll-orange' : 'text-ll-black-300'}`}
+            className={`text-sm font-medium ${trend >= 0 ? 'text-ll-orange' : 'text-ll-black-300'}`}
           >
             {trend >= 0 ? '+' : ''}
             {trend}%

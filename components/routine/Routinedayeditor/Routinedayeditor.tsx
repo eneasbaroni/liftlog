@@ -90,9 +90,7 @@ const SortableExerciseRow = ({
       </button>
 
       <div className="flex-1 min-w-0">
-        <p className="text-ll-white text-[13px] font-medium truncate">
-          {ex.name}
-        </p>
+        <p className="text-ll-white text-sm font-medium truncate">{ex.name}</p>
         <p className="text-ll-black-300 text-[10px] mt-0.5">
           {ex.sets} series · {ex.reps} reps
         </p>
@@ -107,7 +105,7 @@ const SortableExerciseRow = ({
             step={0.5}
             value={editWeight}
             onChange={(e) => onEditWeightChange(Number(e.target.value))}
-            className="w-16 bg-ll-black-900 text-ll-white text-[13px] rounded-[6px] px-2 py-1 border border-ll-orange focus:outline-none"
+            className="w-16 bg-ll-black-900 text-ll-white text-sm rounded-[6px] px-2 py-1 border border-ll-orange focus:outline-none"
           />
           <button
             onClick={() => onEditConfirm(ex.exerciseId)}
@@ -137,7 +135,7 @@ const SortableExerciseRow = ({
           <button
             onClick={() => onRemove(ex.exerciseId)}
             disabled={isPending}
-            className="text-ll-black-300 hover:text-red-400 text-[13px] transition-colors disabled:opacity-40"
+            className="text-ll-black-300 hover:text-red-400 text-sm transition-colors disabled:opacity-40"
           >
             ✕
           </button>
@@ -236,7 +234,7 @@ export const RoutineDayEditor = ({
     <div className="flex flex-col gap-[3px]">
       {localExercises.length === 0 && (
         <div className="bg-ll-black-600 rounded-[10px] px-3 py-6 text-center">
-          <p className="text-ll-black-300 text-[12px]">
+          <p className="text-ll-black-300 text-xs">
             No hay ejercicios para este día.
           </p>
         </div>
@@ -288,13 +286,13 @@ export const RoutineDayEditor = ({
             </p>
             <button
               onClick={() => setShowPicker(false)}
-              className="text-ll-black-300 text-[13px]"
+              className="text-ll-black-300 text-sm"
             >
               ✕
             </button>
           </div>
           {available.length === 0 ? (
-            <p className="text-ll-black-300 text-[12px] text-center py-2">
+            <p className="text-ll-black-300 text-xs text-center py-2">
               Todos los ejercicios ya fueron agregados.
             </p>
           ) : (
@@ -306,7 +304,7 @@ export const RoutineDayEditor = ({
                   disabled={isPending}
                   className="text-left px-3 py-2.5 rounded-lg bg-ll-black-900 hover:bg-ll-black-orange transition-colors disabled:opacity-40"
                 >
-                  <p className="text-ll-white text-[12px]">{ex.name}</p>
+                  <p className="text-ll-white text-xs">{ex.name}</p>
                   <p className="text-ll-black-300 text-[10px] mt-0.5">
                     {ex.defaultSets} × {ex.defaultReps} · {ex.defaultWeight} kg
                   </p>

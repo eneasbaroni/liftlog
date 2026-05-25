@@ -26,10 +26,10 @@ export const ExerciseCard = ({ exercise }: ExerciseCardProps) => {
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <p className="text-ll-white text-[13px] font-medium truncate">
+          <p className="text-ll-white text-sm font-medium truncate">
             {exercise.name}
           </p>
-          <p className="text-ll-black-300 text-[11px] mt-0.5">
+          <p className="text-ll-black-300 text-xs mt-0.5">
             {MUSCLE_GROUP_LABELS[exercise.muscleGroup] ?? exercise.muscleGroup}
           </p>
         </div>

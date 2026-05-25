@@ -21,7 +21,7 @@ const SessionPage = async ({ params }: SessionPageProps) => {
         <h1 className="text-ll-white text-[28px]">Ya terminaste esta sesión</h1>
         <a
           href="/week"
-          className="bg-ll-black-600 hover:bg-ll-black-orange text-ll-white text-[13px] rounded-[8px] px-4 py-2.5 transition-colors"
+          className="bg-ll-black-600 hover:bg-ll-black-orange text-ll-white text-sm rounded-[8px] px-4 py-2.5 transition-colors"
         >
           Volver a la semana
         </a>

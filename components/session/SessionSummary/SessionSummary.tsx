@@ -54,7 +54,7 @@ export const SessionSummary = ({ session, onClose }: SessionSummaryProps) => {
             className="bg-ll-black-600 rounded-[10px] px-4 py-3 flex items-center justify-between"
           >
             <div>
-              <p className="text-ll-white text-[13px]">{ex.name}</p>
+              <p className="text-ll-white text-sm">{ex.name}</p>
               <p className="text-ll-black-300 text-[11px] mt-0.5">
                 {ex.sets} series
               </p>

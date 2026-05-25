@@ -43,12 +43,12 @@ const WeekPage = async () => {
       {/* No active routine */}
       {!routine && (
         <div className="bg-ll-black-600 rounded-[10px] p-6 flex flex-col items-center gap-3 mt-8">
-          <p className="text-ll-black-200 text-[13px] text-center">
+          <p className="text-ll-black-200 text-sm text-center">
             No tenés una rutina activa todavía.
           </p>
           <Link
             href="/routines"
-            className="bg-ll-orange font-anton uppercase text-ll-white text-[12px] rounded-lg px-4 py-2"
+            className="bg-ll-orange font-anton uppercase text-ll-white text-xs rounded-lg px-4 py-2"
           >
             Crear rutina
           </Link>

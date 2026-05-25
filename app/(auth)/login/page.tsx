@@ -65,7 +65,7 @@ const LoginPage = () => {
           className={inputClass}
         />
 
-        {error && <p className="text-ll-orange text-[12px] px-1">{error}</p>}
+        {error && <p className="text-ll-orange text-xs px-1">{error}</p>}
 
         <button
           type="button"

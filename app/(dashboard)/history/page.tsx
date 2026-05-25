@@ -11,7 +11,7 @@ const HistoryPage = async () => {
 
       {completed.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 py-16">
-          <p className="text-ll-black-300 text-[13px] text-center">
+          <p className="text-ll-black-300 text-sm text-center">
             Todavía no completaste ninguna sesión.
           </p>
         </div>

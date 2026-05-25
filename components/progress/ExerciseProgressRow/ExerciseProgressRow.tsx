@@ -18,10 +18,8 @@ export const ExerciseProgressRow = ({ exercise }: ExerciseProgressRowProps) => {
             />
           </div>
           <div className="min-w-0">
-            <p className="text-ll-white text-[13px] truncate">
-              {exercise.name}
-            </p>
-            <p className="text-ll-black-300 text-[11px] mt-0.5">
+            <p className="text-ll-white text-sm truncate">{exercise.name}</p>
+            <p className="text-ll-black-300 text-xs mt-0.5">
               {exercise.defaultSets} × {exercise.defaultReps} ·{' '}
               {exercise.defaultWeight} kg
             </p>

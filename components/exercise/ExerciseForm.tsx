@@ -8,7 +8,7 @@ import { MUSCLE_GROUP_LABELS, MuscleGroup } from '@/lib/constants'
 import { ExerciseFormProps, FormState } from './types'
 
 const inputClass = [
-  'w-full bg-ll-black-600 text-ll-white rounded-lg px-3 py-2.5 text-[13px] bg-ll-black-orange',
+  'w-full bg-ll-black-600 text-ll-white rounded-lg px-3 py-2.5 text-sm bg-ll-black-orange',
   'border border-transparent focus:border-ll-orange focus:outline-none transition-colors',
   'placeholder:text-ll-black-300',
 ].join(' ')
@@ -140,7 +140,7 @@ export const ExerciseForm = ({ exercise, onSuccess }: ExerciseFormProps) => {
       </div>
 
       {/* Error */}
-      {error && <p className="text-ll-orange text-[12px]">{error}</p>}
+      {error && <p className="text-ll-orange text-xs">{error}</p>}
 
       {/* Submit */}
       <button

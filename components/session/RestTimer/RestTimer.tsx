@@ -54,7 +54,7 @@ export const RestTimer = ({ seconds, onSkip }: RestTimerProps) => {
       <button
         type="button"
         onClick={onSkip}
-        className="bg-ll-black-600 hover:bg-ll-black-orange text-ll-white text-[12px] rounded-[8px] px-5 py-2.5 transition-colors"
+        className="bg-ll-black-600 hover:bg-ll-black-orange text-ll-white text-xs rounded-[8px] px-5 py-2.5 transition-colors"
       >
         Saltar descanso
       </button>

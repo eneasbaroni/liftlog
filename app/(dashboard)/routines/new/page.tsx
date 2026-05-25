@@ -51,7 +51,7 @@ const NewRoutinePage = () => {
             Nombre
           </label>
           <input
-            className="w-full bg-ll-black-600 text-ll-white rounded-[8px] px-3 py-2.5 text-[13px] border border-transparent focus:border-ll-orange focus:outline-none transition-colors placeholder:text-ll-black-300"
+            className="w-full bg-ll-black-600 text-ll-white rounded-[8px] px-3 py-2.5 text-sm border border-transparent focus:border-ll-orange focus:outline-none transition-colors placeholder:text-ll-black-300"
             placeholder="Mesociclo 1 — Push/Pull/Legs"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -60,18 +60,18 @@ const NewRoutinePage = () => {
           />
         </div>
 
-        <p className="text-ll-black-300 text-[12px]">
+        <p className="text-ll-black-300 text-xs">
           Después de crear la rutina vas a poder agregar ejercicios para cada
           día de la semana.
         </p>
 
-        {error && <p className="text-ll-orange text-[12px]">{error}</p>}
+        {error && <p className="text-ll-orange text-xs">{error}</p>}
 
         <button
           type="button"
           onClick={handleCreate}
           disabled={isPending}
-          className="w-full font-anton uppercase bg-ll-orange text-ll-white rounded-[8px] py-3 text-[13px] font-medium transition-opacity disabled:opacity-50 hover:opacity-90"
+          className="w-full font-anton uppercase bg-ll-orange text-ll-white rounded-[8px] py-3 text-sm font-medium transition-opacity disabled:opacity-50 hover:opacity-90"
         >
           {isPending ? 'Creando...' : 'Crear rutina'}
         </button>

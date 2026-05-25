@@ -66,10 +66,10 @@ export const SessionDetail = ({ session }: SessionDetailProps) => {
           >
             {/* Exercise header */}
             <div className="px-4 py-3 flex items-center justify-between border-b border-ll-black-900">
-              <p className="text-ll-white text-[13px] font-medium">
+              <p className="text-ll-white text-sm font-medium">
                 {exercise.name}
               </p>
-              <p className="text-ll-orange text-[13px]">
+              <p className="text-ll-orange text-sm">
                 {maxWeight}
                 <span className="text-ll-black-300 text-[10px] ml-0.5">
                   kg máx
@@ -87,7 +87,7 @@ export const SessionDetail = ({ session }: SessionDetailProps) => {
                   <span className="text-ll-black-300 text-[11px] w-12">
                     Serie {set.setNumber}
                   </span>
-                  <span className="text-ll-white text-[12px]">
+                  <span className="text-ll-white text-xs">
                     {set.weight} kg × {set.repsCompleted} reps
                   </span>
                   {set.rir !== undefined && (
@@ -115,7 +115,7 @@ export const SessionDetail = ({ session }: SessionDetailProps) => {
           <p className="text-ll-black-300 text-[9px] uppercase tracking-wider mb-2">
             Notas
           </p>
-          <p className="text-ll-black-200 text-[13px] leading-relaxed">
+          <p className="text-ll-black-200 text-sm leading-relaxed">
             {session.generalNotes}
           </p>
         </div>

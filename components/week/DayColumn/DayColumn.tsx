@@ -18,7 +18,7 @@ export const DayColumn = ({
   return (
     <div
       className={[
-        'flex flex-col gap-[3px]',
+        'flex flex-col gap-0.75',
         isActive ? 'opacity-100' : 'opacity-60',
       ].join(' ')}
     >
@@ -49,7 +49,7 @@ export const DayColumn = ({
           href={`/session/start?routineId=${routineId}&day=${day}`}
           className="bg-ll-orange text-ll-white rounded-[10px] px-3 py-2.5 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
         >
-          <span className="text-[13px] font-medium">Iniciar sesión</span>
+          <span className="text-sm font-medium">Iniciar sesión</span>
         </Link>
       )}
 
@@ -63,7 +63,7 @@ export const DayColumn = ({
         </>
       ) : (
         <div className="bg-ll-black-600 rounded-[10px] px-3 py-4 flex items-center justify-center">
-          <p className="text-ll-black-300 text-[11px]">Descanso</p>
+          <p className="text-ll-black-300 text-xs">Descanso</p>
         </div>
       )}
 
@@ -73,7 +73,9 @@ export const DayColumn = ({
           href={`/routines/${routineId}?day=${day}`}
           className="bg-ll-black-600 hover:bg-ll-black-orange rounded-[10px] px-3 py-2 flex items-center justify-center gap-1 transition-colors"
         >
-          <span className="text-ll-black-300 text-[11px]">+ ejercicio</span>
+          <span className="text-ll-black-300 text-xs uppercase font-anton">
+            + ejercicio
+          </span>
         </Link>
       )}
     </div>

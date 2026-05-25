@@ -70,7 +70,7 @@ export const ActiveSession = ({
         <button
           type="button"
           onClick={() => handleComplete()}
-          className="text-ll-orange text-[12px] hover:opacity-80 transition-opacity"
+          className="text-ll-orange text-xs hover:opacity-80 transition-opacity"
         >
           Terminar
         </button>

@@ -18,7 +18,7 @@ const RoutinesPage = async () => {
         </div>
         <Link
           href="/routines/new"
-          className="bg-ll-orange font-anton uppercase text-ll-white text-[12px] rounded-lg px-3 py-2 transition-opacity hover:opacity-90"
+          className="bg-ll-orange font-anton uppercase text-ll-white text-xs rounded-lg px-3 py-2 transition-opacity hover:opacity-90"
         >
           Nueva
         </Link>
@@ -26,7 +26,7 @@ const RoutinesPage = async () => {
 
       {routines.length === 0 ? (
         <div className="bg-ll-black-600 rounded-[10px] p-6 text-center">
-          <p className="text-ll-black-200 text-[13px]">
+          <p className="text-ll-black-200 text-sm">
             No tenés rutinas creadas todavía.
           </p>
         </div>

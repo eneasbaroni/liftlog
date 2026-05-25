@@ -41,7 +41,7 @@ export const ExerciseList = ({
 
       {/* List */}
       {filtered.length === 0 ? (
-        <p className="text-ll-black-300 text-[13px] text-center py-8">
+        <p className="text-ll-black-300 text-sm text-center py-8">
           No hay ejercicios en este grupo.
         </p>
       ) : (

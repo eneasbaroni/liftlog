@@ -26,7 +26,7 @@ const ExercisesPage = async ({ searchParams }: ExercisesPageProps) => {
         </h1>
         <Link
           href="/exercises/new"
-          className="bg-ll-orange font-anton uppercase text-white text-[12px] rounded-lg px-3 py-2 flex items-center gap-1.5 transition-opacity hover:opacity-90"
+          className="bg-ll-orange font-anton uppercase text-white text-xs rounded-lg px-3 py-2 flex items-center gap-1.5 transition-opacity hover:opacity-90"
         >
           Nuevo
         </Link>

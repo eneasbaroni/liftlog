@@ -44,7 +44,7 @@ export const WEEK_DAY_LABELS: Record<WeekDay, string> = {
 
 export const WEEK_DAY_SHORT_LABELS: Record<WeekDay, string> = {
   monday: 'L',
-  tuesday: 'Martes',
+  tuesday: 'M',
   wednesday: 'X',
   thursday: 'J',
   friday: 'V',

@@ -62,7 +62,7 @@ export const ProgressChart = ({
   if (isLoading) {
     return (
       <div className="h-48 flex items-center justify-center">
-        <p className="text-ll-black-300 text-[12px]">Cargando...</p>
+        <p className="text-ll-black-300 text-xs">Cargando...</p>
       </div>
     )
   }
@@ -70,7 +70,7 @@ export const ProgressChart = ({
   if (points.length === 0) {
     return (
       <div className="h-48 flex items-center justify-center">
-        <p className="text-ll-black-300 text-[12px]">
+        <p className="text-ll-black-300 text-xs">
           Completá sesiones para ver tu progreso
         </p>
       </div>
