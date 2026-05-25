@@ -34,7 +34,6 @@ export const ActiveSession = ({
     rir: number
   ) => {
     await handleLogSet(weight, reps, rir)
-    timer.start(90) // default 90s rest
   }
 
   const handleSkip = () => {
@@ -130,9 +129,15 @@ export const ActiveSession = ({
           </div>
 
           {/* Rest timer or set input */}
-          {isResting && timer.isRunning ? (
+          {isResting ? (
             <div className="bg-ll-black-600 rounded-[10px]">
-              <RestTimer seconds={timer.secondsLeft} onSkip={handleSkip} />
+              <RestTimer
+                isRunning={timer.isRunning}
+                secondsLeft={timer.secondsLeft}
+                initialSeconds={120}
+                onStart={(s) => timer.start(s)}
+                onSkip={handleSkip}
+              />
             </div>
           ) : (
             <ExerciseSetRow

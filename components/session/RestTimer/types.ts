@@ -1,4 +1,7 @@
 export type RestTimerProps = {
-  seconds: number
+  isRunning: boolean
+  secondsLeft: number
+  initialSeconds?: number
+  onStart: (seconds: number) => void
   onSkip: () => void
 }
