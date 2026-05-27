@@ -26,14 +26,35 @@ export const SessionCard = ({ session }: SessionCardProps) => {
   const volume = calcVolume(session)
   const totalSets = calcTotalSets(session)
   const dayLabel = WEEK_DAY_LABELS[session.day as WeekDay] ?? session.day
+  const isInProgress = session.status === 'in_progress'
+
+  const href = isInProgress
+    ? `/session/${session._id}`
+    : `/history/${session._id}`
 
   return (
-    <Link href={`/history/${session._id}`} className="block group">
-      <div className="bg-ll-black-600 hover:bg-ll-black-orange rounded-[10px] p-4 transition-colors">
+    <Link href={href} className="block group">
+      <div
+        className={[
+          'rounded-[10px] p-4 transition-colors',
+          isInProgress
+            ? 'bg-ll-black-orange hover:bg-ll-black-600 border border-ll-orange'
+            : 'bg-ll-black-600 hover:bg-ll-black-orange',
+        ].join(' ')}
+      >
         <div className="flex items-start justify-between mb-3">
           <div>
-            <p className="text-ll-white text-[14px] font-medium">{dayLabel}</p>
-            <p className="text-ll-black-300 text-[11px] mt-0.5">
+            <div className="flex items-center gap-2 mb-0.5">
+              <p className="text-ll-white text-[14px] font-medium">
+                {dayLabel}
+              </p>
+              {isInProgress && (
+                <span className="bg-ll-orange text-ll-white text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full">
+                  En curso
+                </span>
+              )}
+            </div>
+            <p className="text-ll-black-300 text-[11px]">
               {formatDate(session.date)}
             </p>
           </div>
