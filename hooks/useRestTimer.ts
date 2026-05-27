@@ -14,6 +14,7 @@ export const useRestTimer = (): UseRestTimerReturn => {
   const [isRunning, setIsRunning] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const onCompleteRef = useRef<(() => void) | undefined>(undefined)
+  const endTimeRef = useRef<number>(0) // timestamp when timer should end
 
   const stop = useCallback(() => {
     if (intervalRef.current) {
@@ -28,6 +29,7 @@ export const useRestTimer = (): UseRestTimerReturn => {
     (seconds: number, onComplete?: () => void) => {
       stop()
       onCompleteRef.current = onComplete
+      endTimeRef.current = Date.now() + seconds * 1000 // store end timestamp
       setSecondsLeft(seconds)
       setIsRunning(true)
     },
@@ -37,21 +39,34 @@ export const useRestTimer = (): UseRestTimerReturn => {
   useEffect(() => {
     if (!isRunning) return
 
-    intervalRef.current = setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current!)
+    const tick = () => {
+      const remaining = Math.max(
+        0,
+        Math.round((endTimeRef.current - Date.now()) / 1000)
+      )
+      setSecondsLeft(remaining)
+
+      if (remaining <= 0) {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current)
           intervalRef.current = null
-          setIsRunning(false)
-          onCompleteRef.current?.()
-          return 0
         }
-        return prev - 1
-      })
-    }, 1000)
+        setIsRunning(false)
+        onCompleteRef.current?.()
+      }
+    }
+
+    intervalRef.current = setInterval(tick, 500) // check every 500ms for accuracy
+
+    // Also recalculate when app comes back to foreground
+    const handleVisibilityChange = () => {
+      if (!document.hidden) tick()
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [isRunning])
 
