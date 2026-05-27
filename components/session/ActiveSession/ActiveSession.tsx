@@ -79,6 +79,8 @@ export const ActiveSession = ({
       <div className="flex gap-[3px] px-4 mb-4 overflow-x-auto scrollbar-none">
         {session.exercises.map((ex, i) => {
           const isActive = i === activeExerciseIndex
+          const isCompleted = ex.sets.length >= ex.targetSets
+
           return (
             <button
               key={ex.exerciseId}
@@ -88,7 +90,9 @@ export const ActiveSession = ({
                 'shrink-0 px-3 py-1.5 rounded-[8px] text-[11px] transition-colors',
                 isActive
                   ? 'bg-ll-orange text-ll-white'
-                  : 'bg-ll-black-600 text-ll-black-300 hover:bg-ll-black-orange hover:text-ll-white',
+                  : isCompleted
+                    ? 'bg-ll-black-orange text-ll-black-200'
+                    : 'bg-ll-black-600 text-ll-black-300 hover:bg-ll-black-orange hover:text-ll-white',
               ].join(' ')}
             >
               {ex.name}
