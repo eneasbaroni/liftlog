@@ -18,13 +18,14 @@ export const RestTimer = ({
   initialSeconds = 120,
   onStart,
   onSkip,
+  onComplete,
 }: RestTimerProps) => {
   const [duration, setDuration] = useState(initialSeconds)
   const totalRef = useRef(duration)
 
   const handleStart = () => {
     totalRef.current = duration
-    onStart(duration)
+    onStart(duration, onComplete)
   }
 
   const progress = isRunning

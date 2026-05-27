@@ -79,7 +79,7 @@ export const ActiveSession = ({
       <div className="flex gap-[3px] px-4 mb-4 overflow-x-auto scrollbar-none">
         {session.exercises.map((ex, i) => {
           const isActive = i === activeExerciseIndex
-          const isCompleted = ex.sets.length >= ex.targetSets
+          const isDone = ex.sets.length >= ex.targetSets
 
           return (
             <button
@@ -90,7 +90,7 @@ export const ActiveSession = ({
                 'shrink-0 px-3 py-1.5 rounded-[8px] text-[11px] transition-colors',
                 isActive
                   ? 'bg-ll-orange text-ll-white'
-                  : isCompleted
+                  : isDone
                     ? 'bg-ll-black-orange text-ll-black-200'
                     : 'bg-ll-black-600 text-ll-black-300 hover:bg-ll-black-orange hover:text-ll-white',
               ].join(' ')}
@@ -104,7 +104,7 @@ export const ActiveSession = ({
       {/* Active exercise */}
       {activeExercise && (
         <div className="flex-1 px-4 flex flex-col gap-4">
-          {/* Exercise name + sets done */}
+          {/* Exercise name + sets progress */}
           <div className="bg-ll-black-600 rounded-[10px] p-4">
             <p className="text-ll-black-300 text-[9px] uppercase tracking-wider mb-1">
               Ejercicio principal
@@ -139,8 +139,9 @@ export const ActiveSession = ({
                 isRunning={timer.isRunning}
                 secondsLeft={timer.secondsLeft}
                 initialSeconds={120}
-                onStart={(s) => timer.start(s)}
+                onStart={(s, onComplete) => timer.start(s, onComplete)}
                 onSkip={handleSkip}
+                onComplete={handleSkip}
               />
             </div>
           ) : (
