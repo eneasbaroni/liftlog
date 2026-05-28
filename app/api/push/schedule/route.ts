@@ -10,11 +10,7 @@ export const maxDuration = 300
 
 export const POST = async (req: NextRequest) => {
   try {
-    const body = (await req.json()) as {
-      endsAt?: number
-      title?: string
-      body?: string
-    }
+    const body = (await req.json()) as { endsAt?: number }
 
     if (!body.endsAt || typeof body.endsAt !== 'number') {
       return NextResponse.json({ error: 'endsAt is required' }, { status: 400 })
@@ -34,8 +30,6 @@ export const POST = async (req: NextRequest) => {
     const schedule = await PushSchedule.create({
       notifyAt: new Date(body.endsAt),
       cancelled: false,
-      title: body.title,
-      body: body.body,
     })
 
     const scheduleId = schedule._id.toString()

@@ -24,14 +24,7 @@ const showRestTimerNotification = (data) => {
   })
 }
 
-// Local notification from the app (works while SW is alive, e.g. foreground)
-self.addEventListener('message', (event) => {
-  if (event.data?.type !== 'REST_TIMER_DONE') return
-
-  event.waitUntil(showRestTimerNotification(event.data))
-})
-
-// Handle push from server (works in background / app closed)
+// Push from server (background / app closed)
 self.addEventListener('push', (event) => {
   let data = {}
   try {
@@ -43,7 +36,6 @@ self.addEventListener('push', (event) => {
   event.waitUntil(showRestTimerNotification(data))
 })
 
-// Open app when notification is clicked
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
   event.waitUntil(

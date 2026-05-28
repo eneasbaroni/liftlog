@@ -17,10 +17,7 @@ export const runScheduledPush = async (
     const current = await PushSchedule.findById(scheduleId).lean()
     if (!current || current.cancelled) return
 
-    const { sent, failed } = await sendPushNotifications({
-      title: current.title,
-      body: current.body,
-    })
+    const { sent, failed } = await sendPushNotifications()
 
     if (sent === 0 && failed === 0) {
       console.warn(`Scheduled push ${scheduleId}: no subscriptions in database`)

@@ -113,19 +113,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     if (Notification.permission !== 'granted') return
 
     const registration = await navigator.serviceWorker.ready
-
-    const message = {
-      type: 'REST_TIMER_DONE',
-      title: REST_TIMER_TITLE,
-      body: REST_TIMER_BODY,
-      url: REST_TIMER_URL,
-    }
-
-    if (registration.active) {
-      registration.active.postMessage(message)
-      return
-    }
-
     await registration.showNotification(REST_TIMER_TITLE, {
       body: REST_TIMER_BODY,
       icon: REST_TIMER_ICON,
@@ -158,22 +145,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       try {
         cancelNotification()
         await showLocalNotification()
-
-        // Backup server push when the tab was in the background (scheduled push may have failed)
-        if (!document.hidden) return
-
-        const sub = await getPushSubscription()
-        if (!sub) return
-
-        await fetch('/api/push/notify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            title: REST_TIMER_TITLE,
-            body: REST_TIMER_BODY,
-          }),
-          keepalive: true,
-        })
       } catch (err) {
         console.warn('Failed to send rest timer notification:', err)
       } finally {
@@ -196,11 +167,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
           const res = await fetch('/api/push/schedule', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              endsAt,
-              title: REST_TIMER_TITLE,
-              body: REST_TIMER_BODY,
-            }),
+            body: JSON.stringify({ endsAt }),
             keepalive: true,
           })
 
