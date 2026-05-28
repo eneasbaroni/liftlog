@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Anton } from 'next/font/google'
 import './globals.css'
 import { ServiceWorkerRegistrar } from '@/components'
+import { NotificationProvider } from '@/providers/NotificationProvider'
 
 const anton = Anton({
   variable: '--font-anton',
@@ -39,7 +40,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <ServiceWorkerRegistrar />
-        {children}
+        <NotificationProvider>{children}</NotificationProvider>
       </body>
     </html>
   )
