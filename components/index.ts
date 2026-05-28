@@ -17,6 +17,7 @@ export { ActiveSession } from './session/ActiveSession/ActiveSession'
 export { ExerciseSetRow } from './session/ExerciseSetRow/ExerciseSetRow'
 export { RestTimer } from './session/RestTimer/RestTimer'
 export { SessionSummary } from './session/SessionSummary/SessionSummary'
+export { NotificationBanner } from './session/NotificationBanner/NotificationBanner'
 
 // ── Progress ──────────────────────────────────────────────────────────────────
 export { ProgressChart } from './progress/ProgressChart/ProgressChart'

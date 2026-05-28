@@ -7,6 +7,7 @@ import { ExerciseSetRow } from '../ExerciseSetRow/ExerciseSetRow'
 import { RestTimer } from '../RestTimer/RestTimer'
 import { SessionSummary } from '../SessionSummary/SessionSummary'
 import { ActiveSessionProps } from './types'
+import { NotificationBanner } from '@/components'
 
 export const ActiveSession = ({
   session: initialSession,
@@ -73,6 +74,10 @@ export const ActiveSession = ({
         >
           Terminar
         </button>
+      </div>
+
+      <div className="px-4 pb-2">
+        <NotificationBanner />
       </div>
 
       {/* Exercise tabs */}
