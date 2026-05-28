@@ -23,7 +23,17 @@ const eslintConfig = [
       'prefer-const': 'error',
     },
   },
-  /** Last: disables conflicting rules and enables prettier/prettier */
+  // ── Service Worker ────────────────────────────────────────────────────────
+  {
+    files: ['public/sw.js'],
+    languageOptions: {
+      globals: {
+        self: 'readonly',
+        setTimeout: 'readonly',
+        clients: 'readonly',
+      },
+    },
+  },
   eslintPluginPrettierRecommended,
 ]
 

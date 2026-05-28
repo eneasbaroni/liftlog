@@ -30,3 +30,6 @@ export { BottomNav } from './nav/BottomNav/BottomNav'
 // ── History ────────────────────────────────────────────────────────────────────
 export { SessionDetail } from './history/SessionDetail/SessionDetail'
 export { SessionCard } from './history/SessionCard/SessionCard'
+
+// ── Service Worker ──────────────────────────────────────────────────────────────
+export { ServiceWorkerRegistrar } from './ServiceWorkerRegistrar/ServiceWorkerRegistrar'

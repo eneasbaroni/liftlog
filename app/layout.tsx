@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Anton } from 'next/font/google'
 import './globals.css'
+import { ServiceWorkerRegistrar } from '@/components'
 
 const anton = Anton({
   variable: '--font-anton',
@@ -36,7 +37,10 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ServiceWorkerRegistrar />
+        {children}
+      </body>
     </html>
   )
 }

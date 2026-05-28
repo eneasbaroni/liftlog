@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useNotification } from './useNotification'
 
 type UseRestTimerReturn = {
   secondsLeft: number
@@ -14,26 +15,30 @@ export const useRestTimer = (): UseRestTimerReturn => {
   const [isRunning, setIsRunning] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const onCompleteRef = useRef<(() => void) | undefined>(undefined)
-  const endTimeRef = useRef<number>(0) // timestamp when timer should end
+  const endTimeRef = useRef<number>(0)
+
+  const { scheduleNotification, cancelNotification } = useNotification()
 
   const stop = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current)
       intervalRef.current = null
     }
+    cancelNotification()
     setIsRunning(false)
     setSecondsLeft(0)
-  }, [])
+  }, [cancelNotification])
 
   const start = useCallback(
     (seconds: number, onComplete?: () => void) => {
       stop()
       onCompleteRef.current = onComplete
-      endTimeRef.current = Date.now() + seconds * 1000 // store end timestamp
+      endTimeRef.current = Date.now() + seconds * 1000
       setSecondsLeft(seconds)
       setIsRunning(true)
+      scheduleNotification(seconds)
     },
-    [stop]
+    [stop, scheduleNotification]
   )
 
   useEffect(() => {
@@ -56,9 +61,8 @@ export const useRestTimer = (): UseRestTimerReturn => {
       }
     }
 
-    intervalRef.current = setInterval(tick, 500) // check every 500ms for accuracy
+    intervalRef.current = setInterval(tick, 500)
 
-    // Also recalculate when app comes back to foreground
     const handleVisibilityChange = () => {
       if (!document.hidden) tick()
     }
