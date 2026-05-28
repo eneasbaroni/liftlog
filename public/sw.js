@@ -8,23 +8,39 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim())
 })
 
-// Handle push from server
+const showRestTimerNotification = (data) => {
+  const title = data?.title || 'Liftlog — ¡A entrenar!'
+  const body =
+    data?.body || 'El descanso terminó. Es hora de la siguiente serie.'
+
+  return self.registration.showNotification(title, {
+    body,
+    icon: '/icons/icon-192.png',
+    badge: '/icons/icon-192.png',
+    vibrate: [200, 100, 200],
+    tag: 'rest-timer',
+    renotify: true,
+    data: { url: data?.url ?? '/week' },
+  })
+}
+
+// Local notification from the app (works while SW is alive, e.g. foreground)
+self.addEventListener('message', (event) => {
+  if (event.data?.type !== 'REST_TIMER_DONE') return
+
+  event.waitUntil(showRestTimerNotification(event.data))
+})
+
+// Handle push from server (works in background / app closed)
 self.addEventListener('push', (event) => {
-  if (!event.data) return
+  let data = {}
+  try {
+    data = event.data ? event.data.json() : {}
+  } catch {
+    data = {}
+  }
 
-  const data = event.data.json()
-
-  event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: '/icons/icon-192.png',
-      badge: '/icons/icon-192.png',
-      vibrate: [200, 100, 200],
-      tag: 'rest-timer',
-      renotify: true,
-      data: { url: data.url ?? '/week' },
-    })
-  )
+  event.waitUntil(showRestTimerNotification(data))
 })
 
 // Open app when notification is clicked

@@ -1,6 +1,12 @@
 'use client'
 
 import {
+  REST_TIMER_BODY,
+  REST_TIMER_ICON,
+  REST_TIMER_TITLE,
+  REST_TIMER_URL,
+} from '@/lib/push/rest-timer-message'
+import {
   createContext,
   useCallback,
   useContext,
@@ -16,6 +22,7 @@ type NotificationContextValue = {
   subscribe: () => Promise<void>
   scheduleNotification: (delaySeconds: number) => void
   cancelNotification: () => void
+  sendRestTimerNotification: () => void
 }
 
 const NotificationContext = createContext<NotificationContextValue | null>(null)
@@ -33,34 +40,44 @@ const urlBase64ToUint8Array = (
   return outputArray
 }
 
-const REST_TIMER_TITLE = 'Liftlog — ¡A entrenar!'
-const REST_TIMER_BODY = 'El descanso terminó. Es hora de la siguiente serie.'
+const getPushSubscription = async (): Promise<PushSubscription | null> => {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    return null
+  }
+  const registration = await navigator.serviceWorker.ready
+  return registration.pushManager.getSubscription()
+}
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [isSupported, setIsSupported] = useState(false)
   const scheduleIdRef = useRef<string | null>(null)
+  const notifyInFlightRef = useRef(false)
+
+  const syncSubscriptionToServer = useCallback(
+    async (subscription: PushSubscription) => {
+      const serialized = JSON.parse(JSON.stringify(subscription))
+      const res = await fetch('/api/push/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(serialized),
+      })
+      return res.ok
+    },
+    []
+  )
 
   useEffect(() => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return
 
     setIsSupported(true)
 
-    navigator.serviceWorker.ready.then(async (registration) => {
-      const existing = await registration.pushManager.getSubscription()
+    getPushSubscription().then(async (existing) => {
       if (!existing) return
-
-      setIsSubscribed(true)
-
-      // Re-sync in case the subscription exists in the browser but not in DB
-      const serialized = JSON.parse(JSON.stringify(existing))
-      await fetch('/api/push/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(serialized),
-      }).catch(() => {})
+      const synced = await syncSubscriptionToServer(existing)
+      if (synced) setIsSubscribed(true)
     })
-  }, [])
+  }, [syncSubscriptionToServer])
 
   const subscribe = useCallback(async () => {
     if (!isSupported) return
@@ -85,18 +102,37 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         })
       }
 
-      const serialized = JSON.parse(JSON.stringify(sub))
-      const res = await fetch('/api/push/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(serialized),
-      })
-
-      if (res.ok) setIsSubscribed(true)
+      const synced = await syncSubscriptionToServer(sub)
+      if (synced) setIsSubscribed(true)
     } catch (err) {
       console.error('Push subscribe failed:', err)
     }
-  }, [isSupported])
+  }, [isSupported, syncSubscriptionToServer])
+
+  const showLocalNotification = useCallback(async () => {
+    if (Notification.permission !== 'granted') return
+
+    const registration = await navigator.serviceWorker.ready
+
+    const message = {
+      type: 'REST_TIMER_DONE',
+      title: REST_TIMER_TITLE,
+      body: REST_TIMER_BODY,
+      url: REST_TIMER_URL,
+    }
+
+    if (registration.active) {
+      registration.active.postMessage(message)
+      return
+    }
+
+    await registration.showNotification(REST_TIMER_TITLE, {
+      body: REST_TIMER_BODY,
+      icon: REST_TIMER_ICON,
+      tag: 'rest-timer',
+      data: { url: REST_TIMER_URL },
+    })
+  }, [])
 
   const cancelNotification = useCallback(() => {
     const scheduleId = scheduleIdRef.current
@@ -108,29 +144,66 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ scheduleId }),
+      keepalive: true,
     }).catch((err) => {
       console.warn('Failed to cancel scheduled notification:', err)
     })
   }, [])
 
+  const sendRestTimerNotification = useCallback(() => {
+    if (notifyInFlightRef.current) return
+    notifyInFlightRef.current = true
+
+    void (async () => {
+      try {
+        cancelNotification()
+        await showLocalNotification()
+
+        // Backup server push when the tab was in the background (scheduled push may have failed)
+        if (!document.hidden) return
+
+        const sub = await getPushSubscription()
+        if (!sub) return
+
+        await fetch('/api/push/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: REST_TIMER_TITLE,
+            body: REST_TIMER_BODY,
+          }),
+          keepalive: true,
+        })
+      } catch (err) {
+        console.warn('Failed to send rest timer notification:', err)
+      } finally {
+        notifyInFlightRef.current = false
+      }
+    })()
+  }, [showLocalNotification, cancelNotification])
+
   const scheduleNotification = useCallback(
     (delaySeconds: number) => {
-      if (!isSubscribed) return
+      void (async () => {
+        const sub = await getPushSubscription()
+        if (!sub) return
 
-      cancelNotification()
+        cancelNotification()
 
-      const endsAt = Date.now() + delaySeconds * 1000
+        const endsAt = Date.now() + delaySeconds * 1000
 
-      fetch('/api/push/schedule', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          endsAt,
-          title: REST_TIMER_TITLE,
-          body: REST_TIMER_BODY,
-        }),
-      })
-        .then(async (res) => {
+        try {
+          const res = await fetch('/api/push/schedule', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              endsAt,
+              title: REST_TIMER_TITLE,
+              body: REST_TIMER_BODY,
+            }),
+            keepalive: true,
+          })
+
           if (!res.ok) {
             console.warn(
               'Failed to schedule push notification:',
@@ -138,14 +211,15 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
             )
             return
           }
+
           const data = (await res.json()) as { scheduleId?: string }
           if (data.scheduleId) scheduleIdRef.current = data.scheduleId
-        })
-        .catch((err) => {
+        } catch (err) {
           console.warn('Failed to schedule push notification:', err)
-        })
+        }
+      })()
     },
-    [isSubscribed, cancelNotification]
+    [cancelNotification]
   )
 
   return (
@@ -156,6 +230,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         subscribe,
         scheduleNotification,
         cancelNotification,
+        sendRestTimerNotification,
       }}
     >
       {children}

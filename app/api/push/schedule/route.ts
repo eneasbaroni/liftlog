@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse, after } from 'next/server'
 import { connectDB } from '@/lib/db/mongoose'
 import PushSchedule from '@/lib/db/models/PushSchedule'
-import { sendPushNotifications } from '@/lib/push/send-notifications'
-import { sleep } from '@/lib/push/sleep'
+import { runScheduledPush } from '@/lib/push/run-scheduled-push'
 
 /** Max rest timer delay the server will wait for (10 minutes). */
 const MAX_DELAY_MS = 10 * 60 * 1000
@@ -40,22 +39,14 @@ export const POST = async (req: NextRequest) => {
     })
 
     const scheduleId = schedule._id.toString()
+    const run = () => runScheduledPush(scheduleId, delayMs)
 
-    after(async () => {
-      if (delayMs > 0) {
-        await sleep(delayMs)
-      }
-
-      const current = await PushSchedule.findById(scheduleId).lean()
-      if (!current || current.cancelled) return
-
-      await sendPushNotifications({
-        title: current.title,
-        body: current.body,
-      })
-
-      await PushSchedule.deleteOne({ _id: scheduleId })
-    })
+    // `after()` is required on serverless; in dev a detached task is more reliable
+    if (process.env.NODE_ENV === 'development') {
+      void run()
+    } else {
+      after(run)
+    }
 
     return NextResponse.json({ success: true, scheduleId })
   } catch (err) {

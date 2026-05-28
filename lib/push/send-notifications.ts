@@ -1,5 +1,12 @@
+import { connectDB } from '@/lib/db/mongoose'
 import PushSubscription from '@/lib/db/models/PushSubscription'
 import webpush from '@/lib/webpush'
+import {
+  REST_TIMER_BODY,
+  REST_TIMER_ICON,
+  REST_TIMER_TITLE,
+  REST_TIMER_URL,
+} from '@/lib/push/rest-timer-message'
 
 export type PushMessage = {
   title?: string
@@ -10,6 +17,8 @@ export type PushMessage = {
 export const sendPushNotifications = async (
   message: PushMessage = {}
 ): Promise<{ sent: number; failed: number }> => {
+  await connectDB()
+
   const subscriptions =
     await PushSubscription.find().lean<
       Array<{ endpoint: string; keys: { p256dh: string; auth: string } }>
@@ -20,10 +29,10 @@ export const sendPushNotifications = async (
   }
 
   const payload = JSON.stringify({
-    title: message.title ?? 'Liftlog — ¡A entrenar!',
-    body: message.body ?? 'El descanso terminó. Es hora de la siguiente serie.',
-    icon: '/icons/icon-192.png',
-    url: message.url ?? '/week',
+    title: message.title ?? REST_TIMER_TITLE,
+    body: message.body ?? REST_TIMER_BODY,
+    icon: REST_TIMER_ICON,
+    url: message.url ?? REST_TIMER_URL,
   })
 
   const results = await Promise.allSettled(
@@ -35,10 +44,13 @@ export const sendPushNotifications = async (
     )
   )
 
+  results.forEach((result, index) => {
+    if (result.status === 'rejected') {
+      console.error(`Push failed for subscription ${index}:`, result.reason)
+    }
+  })
+
   const failed = results.filter((r) => r.status === 'rejected').length
-  if (failed) {
-    console.warn(`${failed} push(es) failed`)
-  }
 
   return { sent: subscriptions.length - failed, failed }
 }

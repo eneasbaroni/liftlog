@@ -17,7 +17,11 @@ export const useRestTimer = (): UseRestTimerReturn => {
   const onCompleteRef = useRef<(() => void) | undefined>(undefined)
   const endTimeRef = useRef<number>(0)
 
-  const { scheduleNotification, cancelNotification } = useNotification()
+  const {
+    scheduleNotification,
+    cancelNotification,
+    sendRestTimerNotification,
+  } = useNotification()
 
   const stop = useCallback(() => {
     if (intervalRef.current) {
@@ -57,6 +61,7 @@ export const useRestTimer = (): UseRestTimerReturn => {
           intervalRef.current = null
         }
         setIsRunning(false)
+        sendRestTimerNotification()
         onCompleteRef.current?.()
       }
     }
@@ -72,7 +77,7 @@ export const useRestTimer = (): UseRestTimerReturn => {
       if (intervalRef.current) clearInterval(intervalRef.current)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [isRunning])
+  }, [isRunning, sendRestTimerNotification])
 
   return { secondsLeft, isRunning, start, stop }
 }
