@@ -1,3 +1,5 @@
+/* eslint-env serviceworker */
+
 self.addEventListener('install', () => {
   self.skipWaiting()
 })
@@ -6,32 +8,23 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim())
 })
 
-// Listen for messages from the app
-self.addEventListener('message', (event) => {
-  if (event.data?.type === 'SCHEDULE_NOTIFICATION') {
-    const { title, body, delay } = event.data
+// Handle push from server
+self.addEventListener('push', (event) => {
+  if (!event.data) return
 
-    // Schedule notification after delay (in ms)
-    setTimeout(() => {
-      self.registration.showNotification(title, {
-        body,
-        icon: '/icons/icon-192.png',
-        badge: '/icons/icon-192.png',
-        vibrate: [200, 100, 200],
-        tag: 'rest-timer', // replaces previous notification of same tag
-        renotify: true,
-        data: { url: '/session' },
-      })
-    }, delay)
-  }
+  const data = event.data.json()
 
-  if (event.data?.type === 'CANCEL_NOTIFICATION') {
-    self.registration
-      .getNotifications({ tag: 'rest-timer' })
-      .then((notifications) => {
-        notifications.forEach((n) => n.close())
-      })
-  }
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      vibrate: [200, 100, 200],
+      tag: 'rest-timer',
+      renotify: true,
+      data: { url: data.url ?? '/week' },
+    })
+  )
 })
 
 // Open app when notification is clicked
