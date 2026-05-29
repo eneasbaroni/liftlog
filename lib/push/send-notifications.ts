@@ -14,9 +14,10 @@ export const sendPushNotifications = async (): Promise<{
 }> => {
   await connectDB()
 
-  const subscriptions = await PushSubscription.find().lean<
-    Array<{ endpoint: string; keys: { p256dh: string; auth: string } }>
-  >()
+  const subscriptions =
+    await PushSubscription.find().lean<
+      Array<{ endpoint: string; keys: { p256dh: string; auth: string } }>
+    >()
 
   if (!subscriptions.length) {
     return { sent: 0, failed: 0 }
@@ -38,11 +39,23 @@ export const sendPushNotifications = async (): Promise<{
     )
   )
 
+  const staleEndpoints: string[] = []
+
   results.forEach((result, index) => {
-    if (result.status === 'rejected') {
+    if (result.status !== 'rejected') return
+
+    const statusCode = (result.reason as { statusCode?: number })?.statusCode
+    // 404/410 mean the subscription is gone; prune it to avoid stale fan-out.
+    if (statusCode === 404 || statusCode === 410) {
+      staleEndpoints.push(subscriptions[index].endpoint)
+    } else {
       console.error(`Push failed for subscription ${index}:`, result.reason)
     }
   })
+
+  if (staleEndpoints.length) {
+    await PushSubscription.deleteMany({ endpoint: { $in: staleEndpoints } })
+  }
 
   const failed = results.filter((r) => r.status === 'rejected').length
 

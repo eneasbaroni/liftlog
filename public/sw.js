@@ -24,6 +24,16 @@ const showRestTimerNotification = (data) => {
   })
 }
 
+const hasVisibleClient = async () => {
+  const windows = await self.clients.matchAll({
+    type: 'window',
+    includeUncontrolled: true,
+  })
+  return windows.some(
+    (client) => client.focused || client.visibilityState === 'visible'
+  )
+}
+
 // Push from server (background / app closed)
 self.addEventListener('push', (event) => {
   let data = {}
@@ -33,7 +43,13 @@ self.addEventListener('push', (event) => {
     data = {}
   }
 
-  event.waitUntil(showRestTimerNotification(data))
+  event.waitUntil(
+    (async () => {
+      // When the app is open it shows its own notification; avoid duplicating.
+      if (await hasVisibleClient()) return
+      await showRestTimerNotification(data)
+    })()
+  )
 })
 
 self.addEventListener('notificationclick', (event) => {

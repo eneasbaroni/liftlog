@@ -143,15 +143,18 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
     void (async () => {
       try {
-        cancelNotification()
-        await showLocalNotification()
+        // Only notify locally while visible; the service worker push covers
+        // the hidden/closed case. This keeps exactly one notification.
+        if (document.visibilityState === 'visible') {
+          await showLocalNotification()
+        }
       } catch (err) {
         console.warn('Failed to send rest timer notification:', err)
       } finally {
         notifyInFlightRef.current = false
       }
     })()
-  }, [showLocalNotification, cancelNotification])
+  }, [showLocalNotification])
 
   const scheduleNotification = useCallback(
     (delaySeconds: number) => {
