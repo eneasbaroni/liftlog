@@ -34,6 +34,3 @@ export { SessionCard } from './history/SessionCard/SessionCard'
 
 // ── Service Worker ──────────────────────────────────────────────────────────────
 export { ServiceWorkerRegistrar } from './ServiceWorkerRegistrar/ServiceWorkerRegistrar'
-
-// ── Adaptive Icon ──────────────────────────────────────────────────────────────
-export { AdaptiveIcon } from './AdaptiveIcon/AdaptiveIcon'

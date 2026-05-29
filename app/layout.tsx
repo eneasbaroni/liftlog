@@ -3,7 +3,6 @@ import { Anton } from 'next/font/google'
 import './globals.css'
 import { ServiceWorkerRegistrar } from '@/components'
 import { NotificationProvider } from '@/providers/NotificationProvider'
-import { AdaptiveIcon } from '@/components'
 
 const anton = Anton({
   variable: '--font-anton',
@@ -28,7 +27,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${anton.variable} h-full antialiased`}>
       <head>
-        <AdaptiveIcon />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
