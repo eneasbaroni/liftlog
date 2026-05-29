@@ -15,7 +15,10 @@ export const metadata: Metadata = {
   description: 'LiftLog is a tool for tracking your lifts',
   icons: {
     icon: '/logo.png',
-    apple: '/icons/icon-192.png',
+    apple: [
+      { url: '/icons/icon-192.png' },
+      { url: '/icons/icon-192.png', media: '(prefers-color-scheme: dark)' },
+    ],
   },
 }
 
