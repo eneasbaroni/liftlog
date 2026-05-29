@@ -17,9 +17,18 @@ export const getQstashClient = (): Client | null => {
 /**
  * Public base URL where QStash will deliver the scheduled callback.
  * QStash runs in the cloud, so this must be reachable from the internet.
+ * Returns null for localhost (QStash cannot reach it) so callers fall back
+ * to the in-process timer during local development.
  */
 export const getAppUrl = (): string | null => {
-  if (process.env.APP_URL) return process.env.APP_URL.replace(/\/+$/, '')
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-  return null
+  const raw = process.env.APP_URL
+    ? process.env.APP_URL.replace(/\/+$/, '')
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : null
+
+  if (!raw) return null
+  if (/localhost|127\.0\.0\.1|0\.0\.0\.0|\[?::1\]?/.test(raw)) return null
+
+  return raw
 }

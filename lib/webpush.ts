@@ -8,10 +8,10 @@ if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY || !VAPID_EMAIL) {
   throw new Error('Missing VAPID environment variables')
 }
 
-webpush.setVapidDetails(
-  `mailto:${VAPID_EMAIL}`,
-  VAPID_PUBLIC_KEY,
-  VAPID_PRIVATE_KEY
-)
+const vapidSubject = VAPID_EMAIL.startsWith('mailto:')
+  ? VAPID_EMAIL
+  : `mailto:${VAPID_EMAIL}`
+
+webpush.setVapidDetails(vapidSubject, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY)
 
 export default webpush
