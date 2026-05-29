@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useNotification } from './useNotification'
+import { useNotification } from '@/providers/NotificationProvider'
 
 type UseRestTimerReturn = {
   secondsLeft: number

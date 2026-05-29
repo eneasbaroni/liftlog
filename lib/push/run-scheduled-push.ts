@@ -15,19 +15,11 @@ export const runScheduledPush = async (
     await connectDB()
 
     const current = await PushSchedule.findById(scheduleId).lean()
-    if (!current || current.cancelled) {
-      console.log(
-        `Scheduled push ${scheduleId}: cancelled or missing, skipping`
-      )
-      return
-    }
+    if (!current || current.cancelled) return
 
     const { sent, failed } = await sendPushNotifications()
-
     if (sent === 0 && failed === 0) {
       console.warn(`Scheduled push ${scheduleId}: no subscriptions in database`)
-    } else {
-      console.log(`Scheduled push ${scheduleId}: sent=${sent} failed=${failed}`)
     }
 
     await PushSchedule.deleteOne({ _id: scheduleId })

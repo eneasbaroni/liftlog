@@ -8,31 +8,25 @@ import {
   REST_TIMER_URL,
 } from '@/lib/push/rest-timer-message'
 
-export type PushMessage = {
-  title?: string
-  body?: string
-  url?: string
-}
-
-export const sendPushNotifications = async (
-  message: PushMessage = {}
-): Promise<{ sent: number; failed: number }> => {
+export const sendPushNotifications = async (): Promise<{
+  sent: number
+  failed: number
+}> => {
   await connectDB()
 
-  const subscriptions =
-    await PushSubscription.find().lean<
-      Array<{ endpoint: string; keys: { p256dh: string; auth: string } }>
-    >()
+  const subscriptions = await PushSubscription.find().lean<
+    Array<{ endpoint: string; keys: { p256dh: string; auth: string } }>
+  >()
 
   if (!subscriptions.length) {
     return { sent: 0, failed: 0 }
   }
 
   const payload = JSON.stringify({
-    title: message.title ?? REST_TIMER_TITLE,
-    body: message.body ?? REST_TIMER_BODY,
+    title: REST_TIMER_TITLE,
+    body: REST_TIMER_BODY,
     icon: REST_TIMER_ICON,
-    url: message.url ?? REST_TIMER_URL,
+    url: REST_TIMER_URL,
   })
 
   const results = await Promise.allSettled(

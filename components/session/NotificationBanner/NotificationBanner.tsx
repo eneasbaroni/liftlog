@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useNotification } from '@/hooks/useNotification'
+import { useNotification } from '@/providers/NotificationProvider'
 
 export const NotificationBanner = () => {
   const { isSubscribed, isSupported, subscribe } = useNotification()

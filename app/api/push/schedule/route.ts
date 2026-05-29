@@ -26,10 +26,7 @@ export const POST = async (req: NextRequest) => {
 
     await connectDB()
 
-    const schedule = await PushSchedule.create({
-      notifyAt: new Date(body.endsAt),
-      cancelled: false,
-    })
+    const schedule = await PushSchedule.create({ cancelled: false })
 
     const scheduleId = schedule._id.toString()
 
@@ -48,16 +45,13 @@ export const POST = async (req: NextRequest) => {
       await PushSchedule.updateOne({ _id: scheduleId }, { messageId })
     } else {
       // Fallback for local dev (QStash can't reach localhost): in-process timer.
-      console.log(
-        `Scheduling in-process push ${scheduleId} in ${Math.round(delayMs / 1000)}s` +
-          (qstash && !appUrl
-            ? ' (QStash skipped: APP_URL is not a public URL)'
-            : '')
-      )
       const run = () => runScheduledPush(scheduleId, delayMs)
       if (process.env.NODE_ENV === 'development') {
         void run()
       } else {
+        console.warn(
+          'QStash not configured (QSTASH_TOKEN / public APP_URL). Push scheduling is unreliable on serverless without it.'
+        )
         after(run)
       }
     }
