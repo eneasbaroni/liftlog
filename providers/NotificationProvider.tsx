@@ -1,12 +1,6 @@
 'use client'
 
 import {
-  REST_TIMER_BODY,
-  REST_TIMER_ICON,
-  REST_TIMER_TITLE,
-  REST_TIMER_URL,
-} from '@/lib/push/rest-timer-message'
-import {
   createContext,
   useCallback,
   useContext,
@@ -22,7 +16,6 @@ type NotificationContextValue = {
   subscribe: () => Promise<void>
   scheduleNotification: (delaySeconds: number) => void
   cancelNotification: () => void
-  sendRestTimerNotification: () => void
 }
 
 const NotificationContext = createContext<NotificationContextValue | null>(null)
@@ -52,7 +45,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [isSupported, setIsSupported] = useState(false)
   const scheduleIdRef = useRef<string | null>(null)
-  const notifyInFlightRef = useRef(false)
 
   const syncSubscriptionToServer = useCallback(
     async (subscription: PushSubscription) => {
@@ -109,18 +101,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [isSupported, syncSubscriptionToServer])
 
-  const showLocalNotification = useCallback(async () => {
-    if (Notification.permission !== 'granted') return
-
-    const registration = await navigator.serviceWorker.ready
-    await registration.showNotification(REST_TIMER_TITLE, {
-      body: REST_TIMER_BODY,
-      icon: REST_TIMER_ICON,
-      tag: 'rest-timer',
-      data: { url: REST_TIMER_URL },
-    })
-  }, [])
-
   const cancelNotification = useCallback(() => {
     const scheduleId = scheduleIdRef.current
     scheduleIdRef.current = null
@@ -136,25 +116,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       console.warn('Failed to cancel scheduled notification:', err)
     })
   }, [])
-
-  const sendRestTimerNotification = useCallback(() => {
-    if (notifyInFlightRef.current) return
-    notifyInFlightRef.current = true
-
-    void (async () => {
-      try {
-        // Only notify locally while visible; the service worker push covers
-        // the hidden/closed case. This keeps exactly one notification.
-        if (document.visibilityState === 'visible') {
-          await showLocalNotification()
-        }
-      } catch (err) {
-        console.warn('Failed to send rest timer notification:', err)
-      } finally {
-        notifyInFlightRef.current = false
-      }
-    })()
-  }, [showLocalNotification])
 
   const scheduleNotification = useCallback(
     (delaySeconds: number) => {
@@ -200,7 +161,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         subscribe,
         scheduleNotification,
         cancelNotification,
-        sendRestTimerNotification,
       }}
     >
       {children}
